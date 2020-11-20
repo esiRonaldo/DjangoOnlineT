@@ -1,7 +1,9 @@
 from django.db import models
 
-
 # Create your models here.
+from django.urls import reverse
+
+
 class School(models.Model):
     name = models.CharField(max_length=256, )
     principal = models.CharField(max_length=256)
@@ -9,10 +11,15 @@ class School(models.Model):
 
     def __str__(self):
         return self.name
+
+
 class Student(models.Model):
-    name=models.CharField(max_length=256)
-    age=models.PositiveIntegerField()
-    school=models.ForeignKey(School, related_name='students', on_delete=models.CASCADE)
+    name = models.CharField(max_length=256)
+    age = models.PositiveIntegerField()
+    school = models.ForeignKey(School, related_name='students', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("basic_app:detail", kwargs={'pk': self.pk})
